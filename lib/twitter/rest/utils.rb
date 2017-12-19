@@ -12,7 +12,38 @@ module Twitter
       include Twitter::Utils
       DEFAULT_CURSOR = -1
 
-    private
+      # Uploads images and videos. Videos require multiple requests and uploads in chunks of 5 Megabytes.
+      # The only supported video format is mp4.
+      #
+      # @see https://dev.twitter.com/rest/public/uploading-media
+      def upload(media) # rubocop:disable MethodLength, AbcSize
+        if File.basename(media) !~ /\.mp4$/
+          Twitter::REST::Request.new(self, :multipart_post, 'https://upload.twitter.com/1.1/media/upload.json', key: :media, file: media).perform
+        else
+          init = Twitter::REST::Request.new(self, :post, 'https://upload.twitter.com/1.1/media/upload.json',
+                                            command: 'INIT',
+                                            media_type: 'video/mp4',
+                                            total_bytes: media.size).perform
+
+          until media.eof?
+            chunk = media.read(5_000_000)
+            seg ||= -1
+            Twitter::REST::Request.new(self, :multipart_post, 'https://upload.twitter.com/1.1/media/upload.json',
+                                       command: 'APPEND',
+                                       media_id: init[:media_id],
+                                       segment_index: seg += 1,
+                                       key: :media,
+                                       file: StringIO.new(chunk)).perform
+          end
+
+          media.close
+
+          Twitter::REST::Request.new(self, :post, 'https://upload.twitter.com/1.1/media/upload.json',
+                                     command: 'FINALIZE', media_id: init[:media_id]).perform
+        end
+      end
+
+      private
 
       # Take a URI string or Twitter::Identity object and return its ID
       #
