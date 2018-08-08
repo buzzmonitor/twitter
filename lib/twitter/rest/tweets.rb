@@ -2,6 +2,7 @@ require 'twitter/arguments'
 require 'twitter/error'
 require 'twitter/oembed'
 require 'twitter/rest/request'
+require 'twitter/rest/upload_utils'
 require 'twitter/rest/utils'
 require 'twitter/tweet'
 require 'twitter/utils'
@@ -9,6 +10,7 @@ require 'twitter/utils'
 module Twitter
   module REST
     module Tweets
+      include Twitter::REST::UploadUtils
       include Twitter::REST::Utils
       include Twitter::Utils
       MAX_TWEETS_PER_REQUEST = 100

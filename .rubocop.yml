@@ -1,3 +1,6 @@
+AllCops:
+  TargetRubyVersion: 2.3
+
 Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
 
@@ -51,5 +54,8 @@ Style/FrozenStringLiteralComment:
 Style/NumericPredicate:
   Enabled: false
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: 'comma'
+
+Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: 'comma'
