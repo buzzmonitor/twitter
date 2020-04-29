@@ -231,6 +231,15 @@ module Twitter
         update!(status, options.merge(media_ids: media_ids.join(',')))
       end
 
+      def update_with_media_key(status, media_key, options = {})
+        options = options.dup
+        update!(status, options.merge(media_ids: [media_key]))
+      end
+
+      def upload_media(media)
+        upload(media)[:media_id]
+      end
+
       # Returns oEmbed for a Tweet
       #
       # @see https://dev.twitter.com/rest/reference/get/statuses/oembed
