@@ -237,7 +237,7 @@ module Twitter
       end
 
       def upload_media(media)
-        upload(media)[:media_id]
+        upload(media)[:media_key]
       end
 
       # Returns oEmbed for a Tweet
