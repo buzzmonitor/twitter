@@ -231,9 +231,9 @@ module Twitter
         update!(status, options.merge(media_ids: media_ids.join(',')))
       end
 
-      def update_with_media_key(status, media_key, options = {})
+      def update_with_media_ids(status, media_ids, options = {})
         options = options.dup
-        update!(status, options.merge(media_ids: [media_key]))
+        update!(status, options.merge(media_ids: [media_ids]))
       end
 
       def upload_media(media)
