@@ -231,6 +231,10 @@ module Twitter
         update!(status, options.merge(media_ids: media_ids.join(',')))
       end
 
+      def upload_media(media)
+        upload(media)
+      end
+
       # Returns oEmbed for a Tweet
       #
       # @see https://dev.twitter.com/rest/reference/get/statuses/oembed
